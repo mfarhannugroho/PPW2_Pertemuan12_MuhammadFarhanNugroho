@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\ControllerBuku;
 
 /*
@@ -20,17 +19,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', [ProfileController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/buku', [ControllerBuku::class, 'index']);
+
+    
 });
 
-Route::middleware(['auth', 'admin'])->group(function () {
+Route::middleware(['auth','admin'])->group(function () {
     Route::get('/buku', [ControllerBuku::class, 'index']);
     Route::get('/buku/create', [ControllerBuku::class, 'create'])->name('buku.create');
     Route::post('/buku', [ControllerBuku::class, 'store'])->name('buku.store');
@@ -38,6 +39,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/buku/edit/{id}', [ControllerBuku::class, 'edit'])->name('buku.edit');
     Route::post('/buku/update/{id}', [ControllerBuku::class, 'update'])->name('buku.update');
     Route::get('/buku/search', [ControllerBuku::class, 'search'])->name('buku.search');
+    Route::delete('/buku/{buku}/gallery/{gallery}', [ControllerBuku::class, 'deleteGallery'])->name('buku.deleteGallery');
 });
+
 
 require __DIR__.'/auth.php';
