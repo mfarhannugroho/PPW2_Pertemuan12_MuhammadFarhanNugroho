@@ -67,7 +67,7 @@
                             />
                         </div>
                     @endforeach
-                </div>
+                </dfv>
             </div>
         </div>
     </div>
